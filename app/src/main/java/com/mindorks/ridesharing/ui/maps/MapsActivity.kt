@@ -6,11 +6,18 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.mindorks.ridesharing.R
+import com.mindorks.ridesharing.data.network.NetworkService
 import com.mindorks.ridesharing.utils.ViewUtils
 
 class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
+    lateinit var presenter : MapsPresenter
+
+    companion object{
+        private const val TAG = "MapsActivity"
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +26,9 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        presenter = MapsPresenter(NetworkService())
+        presenter.onAttach(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
