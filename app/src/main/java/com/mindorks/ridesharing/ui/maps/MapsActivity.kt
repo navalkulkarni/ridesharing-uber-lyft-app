@@ -8,7 +8,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.mindorks.ridesharing.R
 import com.mindorks.ridesharing.utils.ViewUtils
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
