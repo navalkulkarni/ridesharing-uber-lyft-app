@@ -7,6 +7,7 @@ object Constants {
     const val LAT = "lat"
     const val LNG = "lng"
     const val NEAR_BY_CABS = "nearByCabs"
+    const val REQUEST_CAB = "requestCab"
 
 
 }

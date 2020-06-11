@@ -11,6 +11,7 @@ import com.mindorks.ridesharing.utils.Constants.LAT
 import com.mindorks.ridesharing.utils.Constants.LNG
 import com.mindorks.ridesharing.utils.Constants.LOCATIONS
 import com.mindorks.ridesharing.utils.Constants.NEAR_BY_CABS
+import com.mindorks.ridesharing.utils.Constants.REQUEST_CAB
 import com.mindorks.ridesharing.utils.Constants.TYPE
 
 class MapsPresenter(private val networkService: NetworkService) : WebSocketListener {
@@ -34,6 +35,17 @@ class MapsPresenter(private val networkService: NetworkService) : WebSocketListe
         jsonObject.put(LAT,latLng.latitude)
         jsonObject.put(LNG,latLng.longitude)
         webSocket.sendMessage(jsonObject.toString())
+    }
+
+    fun requestCab(pickupLatLng: LatLng,dropLatLng: LatLng){
+        val jsonObject = JSONObject()
+        jsonObject.put(TYPE, REQUEST_CAB)
+        jsonObject.put("pickUpLat",pickupLatLng.latitude)
+        jsonObject.put("pickUpLng",pickupLatLng.longitude)
+        jsonObject.put("dropLat",dropLatLng.latitude)
+        jsonObject.put("dropLng",dropLatLng.longitude)
+        webSocket.sendMessage(jsonObject.toString())
+
     }
 
     override fun onConnect() {

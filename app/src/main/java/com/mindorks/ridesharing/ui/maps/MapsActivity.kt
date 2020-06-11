@@ -120,6 +120,9 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         dropTextView.setOnClickListener {
             launchLocationAutoCompleteActivity(DROP_REQUEST_CODE)
         }
+        requestCabButton.setOnClickListener {
+            presenter.requestCab(pickupLatLng!!,dropLatLng!!)
+        }
     }
 
     private fun launchLocationAutoCompleteActivity(requestCode: Int){
