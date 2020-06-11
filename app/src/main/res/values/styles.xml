@@ -6,7 +6,7 @@
     </style>
 
     <style name="MapsTheme" parent="AppTheme.Base">
-        <item name="android:windowTranslucentStatus">true</item>
+       <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">

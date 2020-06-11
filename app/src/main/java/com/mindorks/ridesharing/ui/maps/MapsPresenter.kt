@@ -33,7 +33,6 @@ class MapsPresenter(private val networkService: NetworkService) : WebSocketListe
         jsonObject.put(TYPE,NEAR_BY_CABS)
         jsonObject.put(LAT,latLng.latitude)
         jsonObject.put(LNG,latLng.longitude)
-        Log.d(TAG,latLng.latitude.toString())
         webSocket.sendMessage(jsonObject.toString())
     }
 
