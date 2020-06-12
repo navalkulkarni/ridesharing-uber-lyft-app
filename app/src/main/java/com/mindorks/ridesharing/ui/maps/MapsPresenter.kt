@@ -7,6 +7,7 @@ import com.mindorks.ridesharing.simulator.WebSocket
 import com.mindorks.ridesharing.simulator.WebSocketListener
 import org.json.JSONObject
 import com.mindorks.ridesharing.utils.Constants
+import com.mindorks.ridesharing.utils.Constants.CAB_BOOKED
 import com.mindorks.ridesharing.utils.Constants.LAT
 import com.mindorks.ridesharing.utils.Constants.LNG
 import com.mindorks.ridesharing.utils.Constants.LOCATIONS
@@ -59,6 +60,9 @@ class MapsPresenter(private val networkService: NetworkService) : WebSocketListe
         {
             NEAR_BY_CABS ->{
                 handleOnMessageNearbyCabs(jsonObject)
+            }
+            CAB_BOOKED->{
+                view?.informThatCabIsBooked()
             }
         }
     }

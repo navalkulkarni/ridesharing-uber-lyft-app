@@ -8,6 +8,6 @@ object Constants {
     const val LNG = "lng"
     const val NEAR_BY_CABS = "nearByCabs"
     const val REQUEST_CAB = "requestCab"
-
+    const val CAB_BOOKED = "cabBooked"
 
 }

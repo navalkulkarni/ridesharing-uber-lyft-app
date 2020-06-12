@@ -122,6 +122,8 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
             launchLocationAutoCompleteActivity(DROP_REQUEST_CODE)
         }
         requestCabButton.setOnClickListener {
+            statusTextView.visibility = View.VISIBLE
+            statusTextView.text = getString(R.string.requesting_your_cab)
             requestCabButton.isEnabled = false
             pickUpTextView.isEnabled = false
             dropTextView.isEnabled = false
@@ -142,6 +144,10 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
             val nearByCabMarker = addCarMarkerAndGet(latlng)
             nearByCabMarkerList.add(nearByCabMarker!!)
         }
+    }
+
+    override fun informThatCabIsBooked() {
+
     }
 
     private fun addCarMarkerAndGet(latLng: LatLng): Marker? {
@@ -180,8 +186,6 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
     }
-
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
