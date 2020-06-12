@@ -12,6 +12,7 @@ import com.mindorks.ridesharing.utils.Constants.LAT
 import com.mindorks.ridesharing.utils.Constants.LNG
 import com.mindorks.ridesharing.utils.Constants.LOCATIONS
 import com.mindorks.ridesharing.utils.Constants.NEAR_BY_CABS
+import com.mindorks.ridesharing.utils.Constants.PICKUP_PATH
 import com.mindorks.ridesharing.utils.Constants.REQUEST_CAB
 import com.mindorks.ridesharing.utils.Constants.TYPE
 
@@ -63,6 +64,16 @@ class MapsPresenter(private val networkService: NetworkService) : WebSocketListe
             }
             CAB_BOOKED->{
                 view?.informThatCabIsBooked()
+            }
+            PICKUP_PATH->{
+                val jsonArray  = jsonObject.getJSONArray("path")
+                val pickUpPathList = arrayListOf<LatLng>()
+                for (i in 0 until jsonArray.length()){
+                    val lat = (jsonArray.get(i) as JSONObject).getDouble(LAT)
+                    val lng = (jsonArray.get(i) as JSONObject).getDouble(LNG)
+                    pickUpPathList.add(LatLng(lat,lng))
+                }
+                view?.showPickUpPath(pickUpPathList)
             }
         }
     }

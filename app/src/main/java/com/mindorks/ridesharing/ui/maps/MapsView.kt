@@ -7,4 +7,6 @@ interface MapsView {
     fun showNearByCabs(latLngList: List<LatLng>)
 
     fun informThatCabIsBooked()
+
+    fun showPickUpPath(latLngList: List<LatLng>)
 }
