@@ -9,4 +9,10 @@ interface MapsView {
     fun informThatCabIsBooked()
 
     fun showPickUpPath(latLngList: List<LatLng>)
+
+    fun updateCabLocation(latLng: LatLng)
+
+    fun informCabIsArrving()
+
+    fun informCabHasArrived()
 }

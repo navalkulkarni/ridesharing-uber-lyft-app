@@ -41,11 +41,13 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
     private var currentLatLng: LatLng? = null
     private var pickupLatLng:LatLng? = null
     private var dropLatLng:LatLng? = null
+    private var previousLatLngFromServer:LatLng? = null
+    private var currentLatLngFromServer:LatLng? = null
     private var greyPolyline : Polyline? =null
     private var blackPolyline :Polyline? = null
     private var originMarker :Marker? = null
     private var destinationMarker :Marker? = null
-
+    private var movingCabMarker:Marker? = null
     private  val nearByCabMarkerList = arrayListOf<Marker>()
 
     companion object{
@@ -159,9 +161,8 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
                 it.remove()
             }
             nearByCabMarkerList.clear()
-            statusTextView.text = getString(R.string.your_cab_is_booked)
             requestCabButton.visibility = View.GONE
-
+            statusTextView.text = getString(R.string.your_cab_is_booked)
     }
 
     override fun showPickUpPath(latLngList: List<LatLng>) {
@@ -182,10 +183,10 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         blackPolyline = googleMap.addPolyline(blackPolylineOptions)
 
         originMarker = addOriginAndDestinationMarker(latLngList[0])
-        originMarker?.setAnchor(0.5F,0.5F)
+        originMarker?.setAnchor(0.5f,0.5f)
 
         destinationMarker = addOriginAndDestinationMarker(latLngList[latLngList.size-1])
-        destinationMarker?.setAnchor(0.5F,0.5F)
+        destinationMarker?.setAnchor(0.5f,0.5f)
 
         val polyLineAnimator = AnimationUtils.polyLineAnimator()
         polyLineAnimator.addUpdateListener { valueAnimator ->
@@ -195,6 +196,52 @@ class MapsActivity : AppCompatActivity(),MapsView, OnMapReadyCallback {
         }
 
         polyLineAnimator.start()
+    }
+
+    override fun updateCabLocation(latLng: LatLng) {
+        if(movingCabMarker == null){
+            movingCabMarker = addCarMarkerAndGet(latLng)
+        }
+        if(previousLatLngFromServer == null){
+            currentLatLngFromServer = latLng
+            previousLatLngFromServer = currentLatLngFromServer
+            movingCabMarker?.position = currentLatLngFromServer
+            movingCabMarker?.setAnchor(0.5f,0.5f)
+            animateCamera(currentLatLngFromServer!!)
+        }else{
+            previousLatLngFromServer = currentLatLngFromServer
+            currentLatLngFromServer = latLng
+            var valueAnimator = AnimationUtils.cabAnimator()
+            valueAnimator.addUpdateListener { valueAnimator ->
+                if(previousLatLngFromServer != null && currentLatLngFromServer !=null){
+                    val multiplier = valueAnimator.animatedFraction
+                    val nextLocation = LatLng(
+                        multiplier * currentLatLngFromServer!!.latitude + (1-multiplier) * previousLatLngFromServer!!.latitude,
+                        multiplier * currentLatLngFromServer!!.longitude + (1-multiplier) * previousLatLngFromServer!!.longitude
+                    )
+                    movingCabMarker?.position = nextLocation
+                    movingCabMarker?.setAnchor(0.5f,0.5f)
+                    val rotation = MapUtils.getRotation(previousLatLngFromServer!!,nextLocation)
+                    if(!rotation.isNaN())
+                        movingCabMarker?.rotation = rotation
+                    animateCamera(nextLocation)
+                }
+            }
+            valueAnimator.start()
+        }
+
+    }
+
+    override fun informCabIsArrving() {
+        statusTextView.text = getString(R.string.your_cab_is_arriving)
+    }
+
+    override fun informCabHasArrived() {
+       statusTextView.text = getString(R.string.your_cab_has_arrived)
+        greyPolyline!!.remove()
+        blackPolyline!!.remove()
+        originMarker?.remove()
+        destinationMarker?.remove()
     }
 
     private fun addCarMarkerAndGet(latLng: LatLng): Marker? {

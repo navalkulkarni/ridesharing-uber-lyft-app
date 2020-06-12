@@ -7,9 +7,12 @@ import com.mindorks.ridesharing.simulator.WebSocket
 import com.mindorks.ridesharing.simulator.WebSocketListener
 import org.json.JSONObject
 import com.mindorks.ridesharing.utils.Constants
+import com.mindorks.ridesharing.utils.Constants.CAB_ARRIVED
+import com.mindorks.ridesharing.utils.Constants.CAB_ARRIVING
 import com.mindorks.ridesharing.utils.Constants.CAB_BOOKED
 import com.mindorks.ridesharing.utils.Constants.LAT
 import com.mindorks.ridesharing.utils.Constants.LNG
+import com.mindorks.ridesharing.utils.Constants.LOCATION
 import com.mindorks.ridesharing.utils.Constants.LOCATIONS
 import com.mindorks.ridesharing.utils.Constants.NEAR_BY_CABS
 import com.mindorks.ridesharing.utils.Constants.PICKUP_PATH
@@ -74,6 +77,17 @@ class MapsPresenter(private val networkService: NetworkService) : WebSocketListe
                     pickUpPathList.add(LatLng(lat,lng))
                 }
                 view?.showPickUpPath(pickUpPathList)
+            }
+            LOCATION->{
+                val latCurrent = jsonObject.getDouble("lat")
+                val lngCurrent = jsonObject.getDouble("lng")
+                view?.updateCabLocation(LatLng(latCurrent,lngCurrent))
+            }
+            CAB_ARRIVING->{
+                view?.informCabIsArrving()
+            }
+            CAB_ARRIVED->{
+                view?.informCabHasArrived()
             }
         }
     }
