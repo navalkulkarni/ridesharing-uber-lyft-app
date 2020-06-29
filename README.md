@@ -36,5 +36,5 @@ The following <b>Libraries</b> are used:
  </ul>
  
  <h2>Video Walkthrough</h2>
- ![uber-lyft-app-final](https://user-images.githubusercontent.com/24776023/86005795-b372d580-ba32-11ea-9e19-fa52123564d2.gif)
+ ![github](https://user-images.githubusercontent.com/24776023/86005795-b372d580-ba32-11ea-9e19-fa52123564d2.gif)
 
